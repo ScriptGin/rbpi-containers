@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+   plex:
+     image: ghcr.io/linuxserver/plex:latest
+     container_name: my_plex
+     restart: always
+     network_mode: host
+     volumes:
+       - /data/plex/config:/config
+       - /data/plex/tvshows/:/tv
+       - /data/plex/movies:/movies
+     environment:
+       - PUID=1000
+       - PGID=119
+       - VERSION=docker
+
+   nginx:
+     image: nginx:latest
+     container_name: my_nginx
+     restart: always
+     volumes:
+       - /data/nginx/html:/usr/share/nginx/html
+       - /data/nginx/conf.d:/etc/nginx/conf.d
+     ports:
+       - 80:80
+
+   rsyslog:
+     image: my_rsyslog:latest
+     container_name: my_rsyslog
+     restart: always
+     network_mode: host
+     volumes:
+       - /data/rsyslog/log:/var/log
+       - /data/rsyslog/rsyslog.d:/etc/rsyslog.d
