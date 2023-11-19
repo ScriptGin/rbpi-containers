@@ -6,9 +6,9 @@ services:
      restart: always
      network_mode: host
      volumes:
-       - /data/plex/config:/config
-       - /data/plex/tvshows/:/tv
-       - /data/plex/movies:/movies
+       - :-CDATA_PATH-:/plex/config:/config
+       - :-CDATA_PATH-:/plex/tvshows/:/tv
+       - :-CDATA_PATH-:/plex/movies:/movies
      environment:
        - PUID=1000
        - PGID=119
@@ -19,8 +19,8 @@ services:
      container_name: my_nginx
      restart: always
      volumes:
-       - /data/nginx/html:/usr/share/nginx/html
-       - /data/nginx/conf.d:/etc/nginx/conf.d
+       - :-CDATA_PATH-:/nginx/html:/usr/share/nginx/html
+       - :-CDATA_PATH-:/nginx/conf.d:/etc/nginx/conf.d
      ports:
        - 80:80
 
@@ -30,5 +30,19 @@ services:
      restart: always
      network_mode: host
      volumes:
-       - /data/rsyslog/log:/var/log
-       - /data/rsyslog/rsyslog.d:/etc/rsyslog.d
+       - :-CDATA_PATH-:/rsyslog/log:/var/log
+       - :-CDATA_PATH-:/rsyslog/rsyslog.d:/etc/rsyslog.d
+
+   squid_proxy:
+     image: nordvpn-proxy
+     container_name: my_squid_proxy
+     restart: always
+     privileged: true
+     network_mode: host
+     dns:
+       - 8.8.8.8
+     volumes:
+       - :-CDATA_PATH-:/squid/log:/var/log/squid
+     environment:
+       - SERVER=ca
+       - PROTOCOL=udp
