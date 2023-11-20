@@ -62,7 +62,7 @@ do
 done 
 
 # Updating docker compose file
-sed -i "s/:-CDID-:/\\$cdid/g; s/:-CDATA_PATH-:/\\$cdata_path/g" docker-compose.yml
+sed -i "s/:-CDID-:/\$cdid/g; s/:-CDATA_PATH-:/\$cdata_path/g" docker-compose.yml
 if [ $? -ne 0 ]; then
   echo "Oops: unable to modify docker-compose.yml"
   exit 1
