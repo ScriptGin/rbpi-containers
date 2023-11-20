@@ -4,6 +4,19 @@ echo
 echo "Hello from ScriptGin shell bot!"
 echo
 
+# Validating/Installing docker
+which docker > /dev/null
+if [ $? -ne 0 ]; then
+  echo "Installing docker package..."
+  curl -fsSL https://get.docker.com -o get-docker.sh
+  sudo sh get-docker.sh
+fi
+which docker > /dev/null
+if [ $? -ne 0 ]; then
+  echo "Oops: Unable to validate docker service."
+  exit 1
+fi
+
 # Validating docker user
 docker ps > /dev/null 2>&1
 if [ $? -ne 0 ]; then
