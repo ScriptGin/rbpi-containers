@@ -10,8 +10,8 @@ services:
        - :-CDATA_PATH-:/plex/tvshows/:/tv
        - :-CDATA_PATH-:/plex/movies:/movies
      environment:
-       - PUID=1000
-       - PGID=119
+       - PUID=:-CDID-:
+       - PGID=:-CDID-:
        - VERSION=docker
 
    nginx:
