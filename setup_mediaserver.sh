@@ -52,7 +52,7 @@ if [ ! -d "$cdata_path" ]; then
  echo "Oops: unable to handle $cdata_path directory"
  exit 1
 fi
-sudo chmod 766 "$cdata_path"
+sudo chmod 755 "$cdata_path"
 echo
 
 # Creating container subfolders
