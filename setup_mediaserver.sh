@@ -81,6 +81,8 @@ fi
 # Downloading and building creaktive nordvpn-proxy image
 git clone https://github.com/creaktive/nordvpn-proxy.git
 docker build -t nordvpn-proxy nordvpn-proxy
+echo "nord service user" > nordvpn-proxy/auth.txt
+echo "nord service pass" >> nordvpn-proxy/auth.txt
 echo
 
 # Setting up and Starting Media server container services
