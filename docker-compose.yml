@@ -24,15 +24,6 @@ services:
      ports:
        - 80:80
 
-   rsyslog:
-     image: my_rsyslog:latest
-     container_name: my_rsyslog
-     restart: always
-     network_mode: host
-     volumes:
-       - :-CDATA_PATH-:/rsyslog/log:/var/log
-       - :-CDATA_PATH-:/rsyslog/rsyslog.d:/etc/rsyslog.d
-
    squid_proxy:
      image: nordvpn-proxy
      container_name: my_squid_proxy
@@ -46,3 +37,13 @@ services:
      environment:
        - SERVER=ca
        - PROTOCOL=udp
+
+#   rsyslog:
+#     image: my_rsyslog:latest
+#     container_name: my_rsyslog
+#     restart: always
+#     network_mode: host
+#     volumes:
+#       - :-CDATA_PATH-:/rsyslog/log:/var/log
+#       - :-CDATA_PATH-:/rsyslog/rsyslog.d:/etc/rsyslog.d
+
