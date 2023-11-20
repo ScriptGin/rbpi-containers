@@ -85,6 +85,11 @@ read nord_service_user
 echo -n "Enter Nord Service Pass: "
 read nord_service_pass
 
+if [ -z "$nord_service_user" -o -z "$nord_service_pass" ]; then
+  echo "Oops: NordVPN account is required"
+  exit 1
+fi
+
 git clone https://github.com/creaktive/nordvpn-proxy.git
 echo "$nord_service_user" > nordvpn-proxy/auth.txt
 echo "$nord_service_pass" >> nordvpn-proxy/auth.txt
