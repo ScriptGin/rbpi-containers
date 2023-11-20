@@ -10,6 +10,8 @@ if [ $? -ne 0 ]; then
   echo "Installing docker package..."
   curl -fsSL https://get.docker.com -o get-docker.sh
   sudo sh get-docker.sh
+  sudo usermod -a -G docker `whoami`
+  sudo newgrp docker
 fi
 which docker > /dev/null
 if [ $? -ne 0 ]; then
@@ -41,7 +43,7 @@ if [ ! -d "$cdata_path" ]; then
  echo "Oops: unable to handle $cdata_path directory"
  exit 1
 fi
-chmod 766 "$cdata_path"
+sudo chmod 766 "$cdata_path"
 echo
 
 # Creating container subfolders
@@ -54,13 +56,13 @@ do
    exit 1
  fi
  if [ -d "$cdata_path/nginx/html" ]; then
-   landscape-sysinfo > "$cdata_path/nginx/html/index.html"
-   (crontab -l 2> /dev/null | grep -v landscape-sysinfo; echo "*/10 * * * * landscape-sysinfo > $cdata_path/nginx/html/index.html") | crontab -
+   sudo echo "This page will be updated by crontab every 10mins..." > "$cdata_path/nginx/html/index.html"
+   sudo (crontab -l 2> /dev/null | grep -v landscape-sysinfo; echo "*/10 * * * * (echo '<pre>';uname -a; uptime; echo; echo "  `date`";landscape-sysinfo; echo; df -h $cdata_path; echo '</pre>') > $cdata_path/nginx/html/index.html") | crontab -
  fi
 done 
 
 # Updating docker compose file
-sed -i "s/:-CDID-:/\\$cdid/g; s/:-CDATA_PATH-:/\\$cdata_path/g" docker-compose.yml
+sudo sed -i "s/:-CDID-:/\\$cdid/g; s/:-CDATA_PATH-:/\\$cdata_path/g" docker-compose.yml
 if [ $? -ne 0 ]; then
   echo "Oops: unable to modify docker-compose.yml"
   exit 1
