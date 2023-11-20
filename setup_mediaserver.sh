@@ -57,10 +57,10 @@ echo
 
 # Creating container subfolders
 cduser=`whoami`
+sudo chown $cduser "$cdata_path/plex" "$cdata_path/nginx" "$cdata_path/rsyslog" "$cdata_path/squid" 2> /dev/null
 for x in /plex/config /plex/tvshows /plex/movies /nginx/html /nginx/conf.d /rsyslog/log /rsyslog/rsyslog.d /squid/log
 do
  sudo mkdir -p "$cdata_path$x" 2> /dev/null
- sudo chown $cduser "$cdata_path$x" 2> /dev/null
  if [ $? -ne 0 ]; then
    echo "Oops: unable to handle $cdata_path$x directory"
    exit 1
