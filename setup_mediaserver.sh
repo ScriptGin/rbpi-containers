@@ -79,9 +79,14 @@ if [ $? -ne 0 ]; then
 fi
 
 # Downloading and building creaktive nordvpn-proxy image
+echo -n "Enter Nord Service User: "
+read nord_service_user
+echo -n "Enter Nord Service Pass: "
+read nord_service_pass
+
 git clone https://github.com/creaktive/nordvpn-proxy.git
-echo "nord_service_user" > nordvpn-proxy/auth.txt
-echo "nord_service_pass" >> nordvpn-proxy/auth.txt
+echo "$nord_service_user" > nordvpn-proxy/auth.txt
+echo "$nord_service_pass" >> nordvpn-proxy/auth.txt
 docker build -t nordvpn-proxy nordvpn-proxy
 echo
 
@@ -89,15 +94,15 @@ echo
 for x in `cat docker-compose.yml | grep container_name | awk -F: '{print $2}' | sed 's/ //g'`
 do
   echo "Stopping and Removing Affected Container: $x"
-	docker stop ${x}
-	docker rm ${x}
+  docker stop ${x} > /dev/null 2>&1
+  docker rm ${x} > /dev/null 2>&1
   echo
 done
 
 for x in `cat docker-compose.yml | grep container_name | awk -F: '{print $2}' | sed 's/ //g'`
 do
-	echo "Starting Affected Containers: $x"
-	docker-compose up -d
+  echo "Starting Affected Containers: $x"
+  docker-compose up -d
   echo
 done
 
