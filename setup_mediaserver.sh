@@ -41,15 +41,21 @@ if [ ! -d "$cdata_path" ]; then
  echo "Oops: unable to handle $cdata_path directory"
  exit 1
 fi
+chmod 766 "$cdata_path"
 echo
 
 # Creating container subfolders
 for x in /plex/config /plex/tvshows /plex/movies /nginx/html /nginx/conf.d /rsyslog/log /rsyslog/rsyslog.d /squid/log
 do
- sudo mkdir -p $cdata_path$x 2> /dev/null
+ sudo mkdir -p "$cdata_path$x" 2> /dev/null
+ sudo chown `whoami` "$cdata_path$x" 2> /dev/null
  if [ $? -ne 0 ]; then
    echo "Oops: unable to handle $cdata_path$x directory"
    exit 1
+ fi
+ if [ -d "$cdata_path/nginx/html" ]; then
+   landscape-sysinfo > "$cdata_path/nginx/html/index.html"
+   (crontab -l 2> /dev/null | grep -v landscape-sysinfo; echo "*/10 * * * * landscape-sysinfo > $cdata_path/nginx/html/index.html") | crontab -
  fi
 done 
 
