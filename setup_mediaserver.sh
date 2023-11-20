@@ -56,13 +56,13 @@ do
    exit 1
  fi
  if [ -d "$cdata_path/nginx/html" ]; then
-   sudo echo "This page will be updated by crontab every 10mins..." > "$cdata_path/nginx/html/index.html"
-   sudo (crontab -l 2> /dev/null | grep -v landscape-sysinfo; echo "*/10 * * * * (echo '<pre>';uname -a; uptime; echo; echo "  `date`";landscape-sysinfo; echo; df -h $cdata_path; echo '</pre>') > $cdata_path/nginx/html/index.html") | crontab -
+   echo "This page will be updated by crontab every 10mins..." > "$cdata_path/nginx/html/index.html"
+   (crontab -l 2> /dev/null | grep -v landscape-sysinfo; echo "*/10 * * * * (echo '<pre>';uname -a; uptime; echo; echo "  `date`";landscape-sysinfo; echo; df -h $cdata_path; echo '</pre>') > $cdata_path/nginx/html/index.html") | crontab -
  fi
 done 
 
 # Updating docker compose file
-sudo sed -i "s/:-CDID-:/\\$cdid/g; s/:-CDATA_PATH-:/\\$cdata_path/g" docker-compose.yml
+sed -i "s/:-CDID-:/\\$cdid/g; s/:-CDATA_PATH-:/\\$cdata_path/g" docker-compose.yml
 if [ $? -ne 0 ]; then
   echo "Oops: unable to modify docker-compose.yml"
   exit 1
