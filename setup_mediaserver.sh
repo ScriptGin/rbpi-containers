@@ -4,6 +4,12 @@ echo
 echo "Hello from ScriptGin shell bot!"
 echo
 
+cat /proc/version | grep -iq ubuntu
+if [ $? -ne 0 ]; then
+  echo "Oops: Only Ubuntu is supported"
+  exit 1
+fi
+
 # Validating/Installing docker
 which docker > /dev/null
 if [ $? -ne 0 ]; then
@@ -18,6 +24,9 @@ if [ $? -ne 0 ]; then
   echo "Oops: Unable to validate docker service."
   exit 1
 fi
+
+# Install docker-compose package
+sudo apt -y install docker-compose > /dev/null 2>&1
 
 # Validating docker user
 docker ps > /dev/null 2>&1
