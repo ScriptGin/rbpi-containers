@@ -80,6 +80,20 @@ docker run -d \
 }
 
 
+Matter_Server_Container ()
+{
+mkdir -pv /data/matter_server
+docker run -d \
+  --name matter \
+  --network=host \
+  --restart unless-stopped \
+  --security-opt apparmor=unconfined \
+  -e TZ=Asia/Singapore \
+  -v /data/matter_server \
+  --restart=unless-stopped \
+  ghcr.io/home-assistant-libs/python-matter-server:stable
+}
+
 Omada_Controller ()
 {
 mkdir -pv /data/OmadaController/{data,work}
@@ -94,11 +108,15 @@ docker run -d \
   mbentley/omada-controller:latest
 }
 
-#Plex_Media_Container
-#Nginx_Webserver_Container
-#Torrent_Manager_Container
-#Rsyslog_Server_Container
-#Home_Assistant_Container
-#Rsyslog_Server_Container
-#Home_Assistant_Container
-#Omada_Controller
+  case $1 in
+    Plex_Media_Container) Plex_Media_Container;;
+    Nginx_Webserver_Container) Nginx_Webserver_Container;;
+    Torrent_Manager_Container) Torrent_Manager_Container;;
+    Rsyslog_Server_Container) Rsyslog_Server_Container;;
+    Home_Assistant_Container) Home_Assistant_Container;;
+    Rsyslog_Server_Container) Rsyslog_Server_Container;;
+    Home_Assistant_Container) Home_Assistant_Container;;
+    Matter_Server_Container) Matter_Server_Container;;
+    Omada_Controller) Omada_Controller;;
+    *) echo "Requires valid parameter";;
+  esac
