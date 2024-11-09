@@ -15,7 +15,7 @@ docker run -d \
 }
 
 
-Nginx_Webserver_Container ()
+func_Nginx_Webserver_Container ()
 {
 mkdir -pv /data/nginx/{html,conf.d} && \
 echo "Hello Bro" > /data/nginx/html/index.html && \
@@ -29,7 +29,7 @@ docker run -d \
 }
 
 
-Torrent_Manager_Container ()
+func_Torrent_Manager_Container ()
 {
 mkdir -pv /data/transmission/{config,download,watch}
 docker run -d \
@@ -37,10 +37,9 @@ docker run -d \
   -e PUID="`id -u`" \
   -e PGID="`id -g`" \
   -e TZ=Etc/UTC \
-  -e TRANSMISSION_WEB_HOME=/combustion-release/ `#optional` \
   -e USER=kulit `#optional` \
   -e PASS=143kulit `#optional` \
-  -e WHITELIST=iplist `#optional` \
+  -e WHITELIST= `#optional` \
   -p 9091:9091 \
   -p 51413:51413 \
   -p 51413:51413/udp \
@@ -52,9 +51,10 @@ docker run -d \
 }
 
 
-Rsyslog_Server_Container ()
+func_Rsyslog_Server_Container ()
 {
 mkdir -pv /data/rsyslog/{log,rsyslog.d}
+cp conf/rsyslog.conf /data/rsyslog/
 docker run -d \
   --name rsyslog \
   --net=host \
@@ -65,7 +65,7 @@ docker run -d \
 }
 
 
-Home_Assistant_Container ()
+func_Home_Assistant_Container ()
 {
 mkdir -pv /data/homeassistant
 docker run -d \
@@ -80,7 +80,7 @@ docker run -d \
 }
 
 
-Matter_Server_Container ()
+func_Matter_Server_Container ()
 {
 mkdir -pv /data/matter_server
 docker run -d \
@@ -94,7 +94,8 @@ docker run -d \
   ghcr.io/home-assistant-libs/python-matter-server:stable
 }
 
-Omada_Controller ()
+
+func_Omada_Controller ()
 {
 mkdir -pv /data/OmadaController/{data,work}
 docker run -d \
@@ -109,14 +110,15 @@ docker run -d \
 }
 
   case $1 in
-    Plex_Media_Container) Plex_Media_Container;;
-    Nginx_Webserver_Container) Nginx_Webserver_Container;;
-    Torrent_Manager_Container) Torrent_Manager_Container;;
-    Rsyslog_Server_Container) Rsyslog_Server_Container;;
-    Home_Assistant_Container) Home_Assistant_Container;;
-    Rsyslog_Server_Container) Rsyslog_Server_Container;;
-    Home_Assistant_Container) Home_Assistant_Container;;
-    Matter_Server_Container) Matter_Server_Container;;
-    Omada_Controller) Omada_Controller;;
+    Plex_Media_Container) func_Plex_Media_Container;;
+    Nginx_Webserver_Container) func_Nginx_Webserver_Container;;
+    Torrent_Manager_Container) func_Torrent_Manager_Container;;
+    Rsyslog_Server_Container) func_Rsyslog_Server_Container;;
+    Home_Assistant_Container) func_Home_Assistant_Container;;
+    Rsyslog_Server_Container) func_Rsyslog_Server_Container;;
+    Home_Assistant_Container) func_Home_Assistant_Container;;
+    Matter_Server_Container) func_Matter_Server_Container;;
+    Omada_Controller) func_Omada_Controller;;
+    list) cat $0 | grep "^func_" | sed 's/^func_//;s/ ()//';;
     *) echo "Requires valid parameter";;
   esac
