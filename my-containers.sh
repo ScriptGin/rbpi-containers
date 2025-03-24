@@ -1,8 +1,8 @@
 Plex_Media_Container ()
 {
-mkdir -pv /data/plex/{config,tvshows,movies} && \
+mkdir -pv /data/plex/{config,tvshows,movies,videos,pictures} && \
 docker run -d \
-  --name=plex \
+  --name=my_plex \
   --network=host \
   -e PUID="`id -u`" \
   -e PGID="`id -g`" \
@@ -10,6 +10,8 @@ docker run -d \
   -v /data/plex/config:/config \
   -v /data/plex/tvshows/:/tv \
   -v /data/plex/movies:/movies \
+  -v /data/plex/videos:/videos \
+  -v /data/plex/pictures:/pictures \
   --restart unless-stopped \
   ghcr.io/linuxserver/plex:latest
 }
@@ -20,7 +22,7 @@ func_Nginx_Webserver_Container ()
 mkdir -pv /data/nginx/{html,conf.d} && \
 echo "Hello Bro" > /data/nginx/html/index.html && \
 docker run -d \
-  --name=nginx \
+  --name=my_nginx \
   -p 80:80 \
   -v /data/nginx/html:/usr/share/nginx/html \
   #-v /data/nginx/conf.d:/etc/nginx/conf.d \
@@ -33,7 +35,7 @@ func_Torrent_Manager_Container ()
 {
 mkdir -pv /data/transmission/{config,download,watch}
 docker run -d \
-  --name=transmission \
+  --name=my_transmission \
   -e PUID="`id -u`" \
   -e PGID="`id -g`" \
   -e TZ=Etc/UTC \
@@ -56,7 +58,7 @@ func_Rsyslog_Server_Container ()
 mkdir -pv /data/rsyslog/{log,rsyslog.d}
 cp conf/rsyslog.conf /data/rsyslog/
 docker run -d \
-  --name rsyslog \
+  --name my_rsyslog \
   --net=host \
   -v /data/rsyslog/log:/var/log \
   -v /data/rsyslog/rsyslog.d:/etc/rsyslog.d \
@@ -69,7 +71,7 @@ func_Home_Assistant_Container ()
 {
 mkdir -pv /data/homeassistant
 docker run -d \
-  --name homeassistant \
+  --name my_homeassistant \
   --network=host \
   --restart unless-stopped \
   --privileged \
@@ -84,7 +86,7 @@ func_Matter_Server_Container ()
 {
 mkdir -pv /data/matter_server
 docker run -d \
-  --name matter \
+  --name my_matter \
   --network=host \
   --restart unless-stopped \
   --security-opt apparmor=unconfined \
@@ -99,7 +101,7 @@ func_Omada_Controller ()
 {
 mkdir -pv /data/OmadaController/{data,work}
 docker run -d \
-  --name omada-controller \
+  --name my_omada_controller \
   --net=host \
   -e TZ=Asia/Singapore \
   -e SMALL_FILES=false \
