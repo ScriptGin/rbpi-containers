@@ -5,7 +5,7 @@ func_Plex_Media ()
 echo "Creating $1 container"
 sudo mkdir -pv $PARENT_DIR/$1
 sudo mkdir -pv $PARENT_DIR/$1/config $PARENT_DIR/$1/tvshows $PARENT_DIR/$1/movies $PARENT_DIR/$1/videos $PARENT_DIR/$1/pictures && \
-sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && (chmod -R 770 $PARENT_DIR/$1; chmod -R 777 $PARENT_DIR/$1/tvshows $PARENT_DIR/$1/movies $PARENT_DIR/$1/video $PARENT_DIR/$1/pictures) && \
+sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && (chmod -R 775 $PARENT_DIR/$1; chmod -R 777 $PARENT_DIR/$1/tvshows $PARENT_DIR/$1/movies $PARENT_DIR/$1/videos $PARENT_DIR/$1/pictures) && \
 docker run -d \
   --name=$1 \
   --network=host \
@@ -27,7 +27,7 @@ func_Nginx_Webserver ()
 echo "Creating $1 container"
 sudo mkdir -p $PARENT_DIR/$1
 sudo mkdir -pv $PARENT_DIR/$1/html $PARENT_DIR/$1/conf.d && \
-sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && chmod -R 770 $PARENT_DIR/$1 && \
+sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && chmod -R 775 $PARENT_DIR/$1 && \
 echo "Hello Bro" > $PARENT_DIR/$1/html/index.html && \
 docker run -d \
   --name=$1 \
@@ -43,7 +43,7 @@ func_Torrent_Manager ()
 echo "Creating $1 container"
 sudo mkdir -pv $PARENT_DIR/$1
 sudo mkdir -pv $PARENT_DIR/$1/config $PARENT_DIR/$1/download $PARENT_DIR/$1/watch
-sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && chmod -R 770 $PARENT_DIR/$1 && \
+sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && chmod -R 775 $PARENT_DIR/$1 && \
 docker run -d \
   --name=$1 \
   -e PUID="`id -u`" \
@@ -81,7 +81,7 @@ func_Home_Assistant ()
 {
 echo "Creating $1 container"
 sudo mkdir -pv $PARENT_DIR/$1
-sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && chmod -R 770 $PARENT_DIR/$1 && \
+sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && chmod -R 775 $PARENT_DIR/$1 && \
 docker run -d \
   --name=$1 \
   --network=host \
@@ -98,7 +98,7 @@ func_Matter_Server ()
 {
 echo "Creating $1 container"
 sudo mkdir -pv $PARENT_DIR/$1
-sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && chmod -R 770 $PARENT_DIR/$1 && \
+sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && chmod -R 775 $PARENT_DIR/$1 && \
 docker run -d \
   --name=$1 \
   --network=host \
@@ -116,7 +116,7 @@ func_Omada_Controller ()
 echo "Creating $1 container"
 sudo mkdir -pv $PARENT_DIR/$1
 sudo mkdir -pv $PARENT_DIR/$1/data $PARENT_DIR/$1/work
-sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && chmod -R 770 $PARENT_DIR/$1 && \
+sudo chown -R `id -u`:`id -u` $PARENT_DIR/$1 && chmod -R 775 $PARENT_DIR/$1 && \
 docker run -d \
   --name=$1 \
   --net=host \
